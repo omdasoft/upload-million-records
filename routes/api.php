@@ -19,7 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//import data
 Route::get('/upload', [SalesController::class, 'create']);
 Route::post('/upload', [SalesController::class, 'upload']);
 Route::get('/batch', [SalesController::class, 'batch']);
 Route::get('/batch/in-progress', [SalesController::class, 'inProgressBatches']);
+
+//export data
+Route::get('/sales', [SalesController::class, 'index']);
