@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Connection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Events\QueryExecuted;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
+			Log::warning("Database query [{$event->sql}] took longer than 500 second [Connection: {$connection->getName()}]");
+			
+			// or use another channel to notify your team
+		});
     }
 }
